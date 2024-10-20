@@ -60,25 +60,30 @@
 		border-bottom: 0.5px solid;
 	}
 
-	details > summary {
-		list-style: none;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
+	details {
+		& > summary {
+			list-style: none;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
 
-		&::after {
-			content: "";
-			border: solid;
-			border-width: 0 2px 2px 0;
-			display: inline-block;
-			padding: max(0.25em, 4px);
-			transform: rotate(-45deg);
-			-webkit-transform: rotate(-45deg);
+			&::after {
+				content: "";
+				border: solid;
+				border-width: 0 2px 2px 0;
+				display: inline-block;
+				padding: max(0.25em, 4px);
+				transform: rotate(-45deg);
+				-webkit-transform: rotate(-45deg);
+				transition: all 0.2s ease;
+			}
 		}
 
-		&[open] > summary::after {
-			transform: rotate(45deg);
-			-webkit-transform: rotate(45deg);
+		&[open] > summary{
+			&::after {
+				transform: rotate(45deg);
+				-webkit-transform: rotate(45deg);
+			}
 		}
 	}
 
