@@ -21,7 +21,7 @@ A simple block for displaying your block theme's style
 
 ## Try it on WP Playground
 
-<a href="https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/jeffreysmithart/style-guide/refs/heads/main/_playground/blueprint.json" target="_blank">Try it on Playground</a>
+[Try it on Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/jeffreysmithart/style-guide/refs/heads/main/_playground/blueprint.json)
 
 ## Changelog
 
