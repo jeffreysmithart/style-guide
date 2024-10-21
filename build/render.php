@@ -2,7 +2,7 @@
 $selected_sections = $attributes['selectedSections'] ?? [];
 
 ?>
-<div <?php echo get_block_wrapper_attributes(); ?>>
+<div <?php echo wp_kses_data(get_block_wrapper_attributes()); ?>>
 	<?php
 	if (!empty($selected_sections)) {
 		// Retrieve theme settings from theme.json
@@ -74,7 +74,7 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 									: $font_size['size'];
 								echo '<li>
 										<details>
-											<summary class="has-' . esc_attr($font_size['slug']) . '-font-size">' . esc_html($font_size['name']) . ' (' . $size . ')</summary>
+											<summary class="has-' . esc_attr($font_size['slug']) . '-font-size">' . esc_html($font_size['name']) . ' (' . esc_html($size) . ')</summary>
 											<div class="chip__meta">
 												<p>Size: ' . esc_html($size) . '</p>
 												<p>Fluid: ' . esc_html($fluid) . '</p>
