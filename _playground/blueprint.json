@@ -1,0 +1,50 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/wp-admin/post-new.php?post_type=page",
+	"preferredVersions": {
+		"php": "8.2",
+		"wp": "beta"
+	},
+	"features": {
+		"networking": true
+	},
+    "landingPage": "/wp-admin/post.php?post=4&action=edit",
+	"steps": [
+        {
+			"step": "installPlugin",
+			"pluginZipFile": {
+				"resource": "wordpress.org/plugins",
+				"slug": "gutenberg"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginZipFile": {
+				"resource": "url",
+				"url": "https://github-proxy.com/proxy/?repo=jeffreysmithart/style-guide&branch=main"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "interactive-code-block"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; wp_insert_post(['post_title' => 'Style Guide block','post_content' => '<!-- wp:group {\"align\":\"wide\",\"layout\":{\"type\":\"default\"}} --><div class=\"wp-block-group alignwide\"><!-- wp:style-guide-block/style-guide /--></div><!-- /wp:group -->', 'post_status' => 'publish', 'post_type' => 'post',]);"
+		}
+	]
+}
