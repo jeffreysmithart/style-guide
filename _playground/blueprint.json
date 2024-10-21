@@ -1,6 +1,5 @@
 {
     "$schema": "https://playground.wordpress.net/blueprint-schema.json",
-	"landingPage": "/wp-admin/post-new.php?post_type=page",
 	"preferredVersions": {
 		"php": "8.2",
 		"wp": "beta"
@@ -47,16 +46,9 @@
 			"themeZipFile": {
 				"resource": "wordpress.org/themes",
 				"slug": "twentytwentyfour"
-			}
-		},
-        {
-			"step": "installTheme",
-			"themeZipFile": {
-				"resource": "wordpress.org/themes",
-				"slug": "twentytwentyfive"
 			},
-			"options": {
-				"activate": true
+            "options": {
+				"activate": false
 			}
 		},
 		{
