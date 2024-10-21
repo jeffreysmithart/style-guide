@@ -19,6 +19,10 @@ A simple block for displaying your block theme's style
 
 ![Selecting and removing style guide sections in the Inspector controls sidebar of a WordPress editor](./assets/screenshot-1.gif "After installation, add the new Style Guide block to your page. You then have the option to add or remove different style guide sections.")
 
+## Try it on WP Playground
+
+[Try it on Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/jeffreysmithart/style-guide/refs/heads/main/_playground/blueprint.json)
+
 ## Changelog
 
 = 0.1.1 =
