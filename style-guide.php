@@ -5,7 +5,7 @@
  * Description:       A simple block for displaying your theme.json styles..
  * Requires at least: 6.6
  * Requires PHP:      8.0
- * Version:           1.1.1
+ * Version:           1.1.2
  * Author:            Jeffrey Smith
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html

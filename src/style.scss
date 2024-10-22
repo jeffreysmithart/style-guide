@@ -1,4 +1,5 @@
 .wp-block-style-guide-block-style-guide {
+	interpolate-size: allow-keywords;
 
 	.style-guide-section {
 
@@ -67,6 +68,15 @@
 			align-items: center;
 			gap: 0.5rem;
 			line-height: 1;
+			&:hover {
+				cursor: pointer;
+			}
+			&:focus {
+				outline: none;
+			}
+			&:focus-visible {
+				outline: 2px solid;
+			}
 
 			&::after {
 				content: "";
