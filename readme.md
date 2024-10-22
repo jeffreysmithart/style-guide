@@ -34,7 +34,7 @@ A simple block for displaying your block theme's style
 
 = 1.1.1 =
 
-Add Github repo URL
+- Add Github repo URL
 
 = 1.1.0 =
 
