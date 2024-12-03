@@ -4,7 +4,7 @@ Contributors: jsmith7
 Tags: block, styles
 Requires at least: 6.5
 Tested up to: 6.7
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -27,6 +27,10 @@ A simple block for displaying your block theme's style
 [Try it on Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/jeffreysmithart/style-guide/refs/heads/main/_playground/blueprint.json)
 
 ## Changelog
+
+= 1.2.0 =
+
+- Add gradients to the style guide block
 
 = 1.1.2 =
 
