@@ -35,6 +35,7 @@ export default function Edit( { attributes, setAttributes } ) {
 									value: 'spacing-scale',
 								},
 								{ label: 'Shadows', value: 'shadows' },
+								{ label: 'Gradients', value: 'gradients' },
 							] }
 							label={ __( 'Select Sections' ) }
 						/>

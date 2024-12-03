@@ -8,6 +8,8 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 		// Retrieve theme settings from theme.json
 		$theme_settings = wp_get_global_settings();
 
+		// var_dump($theme_settings);
+
 		foreach ($selected_sections as $section) {
 			switch ($section) {
 				case 'color-palette':
@@ -152,6 +154,45 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 						}
 						echo '</section>';
 					}
+					break;
+				case 'gradients';
+
+
+					// Extract the gradients
+					$defatult_gradients = isset($theme_settings['color']['gradients']['default']) && $theme_settings['color']['defaultGradients'] === true ? array('default' => $theme_settings['color']['gradients']['default']) : [];
+					$custom_gradients = isset($theme_settings['color']['gradients']['custom']) && $theme_settings['color']['customGradient'] === true ? array('custom' => $theme_settings['color']['gradients']['custom'])  : [];
+					$theme_gradients = isset($theme_settings['color']['gradients']['theme']) ? array('theme' => $theme_settings['color']['gradients']['theme']) : [];
+					$gradients_array = array_merge($defatult_gradients, $theme_gradients,  $custom_gradients);
+
+					if (!empty($gradients_array)) {
+						$array_keys = array_keys($gradients_array);
+						$count = 0;
+						echo '<section class="style-guide-section gradients">';
+						echo '<h2 id="gradients">Gradients</h2>';
+						foreach ($gradients_array as $gradients) {
+							echo '<div class="gradients__group style-group">';
+							// output array key as the name of the gradient
+							echo '<h3 class="sub-head" id="gradients-' . esc_html($array_keys[$count]) . '">' . esc_html(ucwords($array_keys[$count])) . '</h3>';
+							echo '<ul class="list">';
+							foreach ($gradients as $gradient) {
+								echo '<li>
+												<div class="chip chip--gradient" style="background-image:var(--wp--preset--gradient--' . esc_attr($gradient['slug']) . ');"></div>
+												<details>
+													<summary>' . esc_html($gradient['name']) . '</summary>
+													<div class="chip__meta">					
+														<p>background-image:' . esc_html($gradient['gradient']) . ';</p>
+														<p>--wp--preset--gradient--' . esc_html($gradient['slug']) . '</p>
+													</div>
+												</details>
+											</li>';
+							}
+							echo '</ul>';
+							echo '</div>';
+							$count++;
+						}
+						echo '</section>';
+					}
+
 					break;
 			}
 		}
