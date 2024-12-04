@@ -8,6 +8,8 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 		// Retrieve theme settings from theme.json
 		$theme_settings = wp_get_global_settings();
 
+		var_dump($theme_settings);
+
 		foreach ($selected_sections as $section) {
 			switch ($section) {
 				case 'color-palette':
@@ -123,9 +125,10 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 				case 'shadows':
 
 					// Extract the shadows
-					$default_shadows = isset($theme_settings['shadow']['defaultPresets']) ? $theme_settings['shadow']['presets'] : [];
-					$custom_shadows = isset($theme_settings['shadow']['custom']) ? $theme_settings['shadow']['custom'] : [];
-					$shadows_array = array_merge($default_shadows, $custom_shadows);
+					$default_shadows = $theme_settings['shadow']['defaultPresets'] ? array('default' => $theme_settings['shadow']['presets']['default']) : [];
+					$custom_shadows = isset($theme_settings['shadow']['presets']['custom']) ? array('custom' => $theme_settings['shadow']['presets']['custom']) : [];
+					$theme_shadows = isset($theme_settings['shadow']['presets']['theme']) ? array('theme' => $theme_settings['shadow']['presets']['theme']) : [];
+					$shadows_array = array_merge($default_shadows, $theme_shadows, $custom_shadows);
 
 					if (!empty($shadows_array)) {
 						$array_keys = array_keys($shadows_array);
