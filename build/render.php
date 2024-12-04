@@ -8,8 +8,6 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 		// Retrieve theme settings from theme.json
 		$theme_settings = wp_get_global_settings();
 
-		// var_dump($theme_settings);
-
 		foreach ($selected_sections as $section) {
 			switch ($section) {
 				case 'color-palette':
@@ -55,7 +53,10 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 					break;
 				case 'font-sizes':
 					// Extract the font sizes
-					$font_sizes_array = isset($theme_settings['typography']['fontSizes']) ? $theme_settings['typography']['fontSizes'] : [];
+					$default_font_sizes = isset($theme_settings['typography']['fontSizes']['default']) && $theme_settings['typography']['defaultFontSizes'] === true ? array('default' => $theme_settings['typography']['fontSizes']['default']) : [];
+					$custom_font_sizes = isset($theme_settings['typography']['fontSizes']['custom']) && $theme_settings['typography']['customFontSize'] ? array('custom' => $theme_settings['typography']['fontSizes']['custom']) : [];
+					$theme_font_sizes = isset($theme_settings['typography']['fontSizes']['theme']) ? array('theme' => $theme_settings['typography']['fontSizes']['theme'])  : [];
+					$font_sizes_array = array_merge($default_font_sizes, $theme_font_sizes, $custom_font_sizes);
 
 					// Display font sizes
 					if (!empty($font_sizes_array)) {
