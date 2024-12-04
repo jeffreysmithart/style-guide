@@ -8,8 +8,6 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 		// Retrieve theme settings from theme.json
 		$theme_settings = wp_get_global_settings();
 
-		var_dump($theme_settings);
-
 		foreach ($selected_sections as $section) {
 			switch ($section) {
 				case 'color-palette':
