@@ -28,6 +28,10 @@ A simple block for displaying your block theme's style
 
 ## Changelog
 
+= 1.2.2 =
+
+- Wrap values in pre tag to avoid conversion to dash character.
+
 = 1.2.1 =
 
 - Update render template to show/hide default font sizes based on theme.json
