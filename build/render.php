@@ -38,8 +38,8 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 								<details>
 									<summary>' . esc_html($color['name']) . '</summary>
 									<div class="chip__meta">					
-										<p>' . esc_html($color['color']) . '</p>
-										<p>--wp--preset--color--' . esc_html($color['slug']) . '</p>
+										<pre>' . esc_html($color['color']) . '</pre>
+										<pre>--wp--preset--color--' . esc_html($color['slug']) . '</pre>
 									</div>
 								</details>
 							</li>';
@@ -79,9 +79,9 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 										<details>
 											<summary class="has-' . esc_attr($font_size['slug']) . '-font-size">' . esc_html($font_size['name']) . ' (' . esc_html($size) . ')</summary>
 											<div class="chip__meta">
-												<p>Size: ' . esc_html($size) . '</p>
-												<p>Fluid: ' . esc_html($fluid) . '</p>
-												<p>--wp--preset--font-size--' . esc_html($font_size['slug']) . '</p>
+												<pre>Size: ' . esc_html($size) . '</pre>
+												<pre>Fluid: ' . esc_html($fluid) . '</pre>
+												<pre>--wp--preset--font-size--' . esc_html($font_size['slug']) . '</pre>
 											</div>
 										</details>
 								</li>';
@@ -110,8 +110,8 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 									<details>
 										<summary>' . esc_html($spacing_size['name']) . '</summary>
 										<div class="chip__meta">
-											<p>Size: ' . esc_html($spacing_size['size']) . '</p>
-											<p>--wp--preset--spacing--' . esc_html($spacing_size['slug']) . '</p>
+											<pre>Size: ' . esc_html($spacing_size['size']) . '</pre>
+											<pre>--wp--preset--spacing--' . esc_html($spacing_size['slug']) . '</pre>
 										</div>
 									</details>
 								</li>';
@@ -144,8 +144,8 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 										<details>
 											<summary>' . esc_html($shadow['name']) . '</summary>
 											<div class="chip__meta">					
-												<p>box-shadow:' . esc_html($shadow['shadow']) . ';</p>
-												<p>--wp--preset--shadow--' . esc_html($shadow['slug']) . '</p>
+												<pre>box-shadow:' . esc_html($shadow['shadow']) . ';</pre>
+												<pre>--wp--preset--shadow--' . esc_html($shadow['slug']) . '</pre>
 											</div>
 										</details>
 									</li>';
@@ -182,8 +182,8 @@ $selected_sections = $attributes['selectedSections'] ?? [];
 												<details>
 													<summary>' . esc_html($gradient['name']) . '</summary>
 													<div class="chip__meta">					
-														<p>background-image:' . esc_html($gradient['gradient']) . ';</p>
-														<p>--wp--preset--gradient--' . esc_html($gradient['slug']) . '</p>
+														<pre>background-image:' . esc_html($gradient['gradient']) . ';</pre>
+														<pre>--wp--preset--gradient--' . esc_html($gradient['slug']) . '</pre>
 													</div>
 												</details>
 											</li>';
