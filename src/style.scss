@@ -56,6 +56,44 @@
 		border: 0;
 	}
 
+	.style-guide-format-toggle {
+		display: inline-flex;
+		gap: 0;
+		border: 1px solid;
+		border-radius: 4px;
+		overflow: hidden;
+		margin-bottom: 1rem;
+	}
+
+	.style-guide-format-btn {
+		background: none;
+		border: none;
+		border-right: 1px solid;
+		padding: 0.35rem 0.75rem;
+		cursor: pointer;
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+		color: inherit;
+		opacity: 0.6;
+		transition: opacity 0.2s ease, background-color 0.2s ease;
+
+		&:last-child {
+			border-right: none;
+		}
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&[aria-pressed="true"] {
+			opacity: 1;
+			background-color: currentColor;
+			/* Invert text against the currentColor background */
+			color: Canvas;
+		}
+	}
+
 	.sub-head {
 		padding-bottom: 0.25rem;
 		border-bottom: 0.5px solid;
