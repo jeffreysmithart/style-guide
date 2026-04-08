@@ -61,6 +61,42 @@
 		border-bottom: 0.5px solid;
 	}
 
+	.chip__value {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+
+		pre {
+			margin: 0;
+			flex: 1;
+			min-width: 0;
+		}
+	}
+
+	.style-guide-copy {
+		background: none;
+		border: 1px solid;
+		border-radius: 4px;
+		padding: 0.25rem;
+		cursor: pointer;
+		opacity: 0.4;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		color: inherit;
+		transition: opacity 0.2s ease;
+
+		&:hover,
+		&:focus-visible {
+			opacity: 1;
+		}
+
+		&.copied {
+			opacity: 1;
+		}
+	}
+
 	details {
 		& > summary {
 			list-style: none;

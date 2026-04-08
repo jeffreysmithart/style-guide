@@ -1,8 +1,8 @@
 {
 	"name": "style-guide",
 	"version": "0.1.0",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
+	"description": "A simple block for displaying your theme.json styles.",
+	"author": "Jeffrey Smith",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
@@ -17,7 +17,5 @@
 	"devDependencies": {
 		"@wordpress/scripts": "^30.3.0"
 	},
-	"dependencies": {
-		"@codeamp/block-components": "^0.0.1-beta.13"
-	}
+	"dependencies": {}
 }

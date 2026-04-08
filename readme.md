@@ -2,9 +2,9 @@
 
 Contributors: jsmith7
 Tags: block, styles
-Requires at least: 6.5
+Requires at least: 6.6
 Tested up to: 6.7
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -27,6 +27,18 @@ A simple block for displaying your block theme's style
 [Try it on Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/jeffreysmithart/style-guide/refs/heads/main/_playground/blueprint.json)
 
 ## Changelog
+
+= 1.3.0 =
+
+- Add color format toggle (HEX, RGB, HSL) in block inspector.
+- Add copy-to-clipboard buttons for CSS variables and values.
+- Replace third-party MultiSelectControl with WordPress core CheckboxControl.
+- Fix missing isset() guard on shadow defaultPresets.
+- Fix case statement semicolon for gradients section.
+- Add spacing support for default and custom groups.
+- Add internationalization (i18n) support for all user-facing strings.
+- Refactor render template with shared helper functions.
+- Clean up scaffolding boilerplate in metadata files.
 
 = 1.2.2 =
 

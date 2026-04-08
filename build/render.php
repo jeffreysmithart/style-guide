@@ -1,200 +1,222 @@
 <?php
 $selected_sections = $attributes['selectedSections'] ?? [];
+$color_format = $attributes['colorFormat'] ?? 'hex';
 
 ?>
 <div <?php echo wp_kses_data(get_block_wrapper_attributes()); ?>>
 	<?php
 	if (!empty($selected_sections)) {
-		// Retrieve theme settings from theme.json
 		$theme_settings = wp_get_global_settings();
 
 		foreach ($selected_sections as $section) {
 			switch ($section) {
 				case 'color-palette':
-					// Extract the color palette
-					$color_palettes = isset($theme_settings['color']['palette']) ? $theme_settings['color']['palette'] : [];
-					$show_default_palette = isset($theme_settings['color']['defaultPalette']) ? $theme_settings['color']['defaultPalette'] : true;
-					// if $show_default_palette is true, show the default palette otherwise, remove the default palette from the array
-					if ($show_default_palette === false) {
-						unset($color_palettes['default']);
-					}
+					$show_default = $theme_settings['color']['defaultPalette'] ?? true;
+					$palettes = style_guide_get_preset_groups(
+						$theme_settings['color']['palette'] ?? [],
+						$show_default
+					);
 
-					// Display color palette
-					if (!empty($color_palettes)) {
-						$array_keys = array_keys($color_palettes);
-						$palette_count = 0;
+					if (!empty($palettes)) {
 						echo '<section class="style-guide-section color-palette">';
-						echo '<h2 id="colorPalette">Color Palette</h2>';
-
-						foreach ($color_palettes as $palette_name => $color_palette) {
+						echo '<h2 id="colorPalette">' . esc_html__('Color Palette', 'style-guide') . '</h2>';
+						foreach ($palettes as $group_name => $colors) {
 							echo '<div class="color-palette__group style-group">';
-							// output array key as the name of the color palette
-							echo '<h3 class="sub-head" id="colorPalette-' . esc_html($array_keys[$palette_count]) . '">' . esc_html(ucwords($array_keys[$palette_count])) . '</h3>';
-
+							echo '<h3 class="sub-head" id="colorPalette-' . esc_attr($group_name) . '">' . esc_html(ucwords($group_name)) . '</h3>';
 							echo '<ul class="list">';
-							foreach ($color_palette as $color) {
+							foreach ($colors as $color) {
+								$display_value = style_guide_convert_color($color['color'], $color_format);
+								$css_var = '--wp--preset--color--' . $color['slug'];
 								echo '<li>
-								<div class="chip chip--color has-' . esc_html($color['slug']) . '-background-color"></div>
-								<details>
-									<summary>' . esc_html($color['name']) . '</summary>
-									<div class="chip__meta">					
-										<pre>' . esc_html($color['color']) . '</pre>
-										<pre>--wp--preset--color--' . esc_html($color['slug']) . '</pre>
-									</div>
-								</details>
-							</li>';
+									<div class="chip chip--color has-' . esc_attr($color['slug']) . '-background-color"></div>
+									<details>
+										<summary>' . esc_html($color['name']) . '</summary>
+										<div class="chip__meta">
+											<div class="chip__value">
+												<pre>' . esc_html($display_value) . '</pre>
+												' . style_guide_copy_button($display_value) . '
+											</div>
+											<div class="chip__value">
+												<pre>' . esc_html($css_var) . '</pre>
+												' . style_guide_copy_button($css_var) . '
+											</div>
+										</div>
+									</details>
+								</li>';
 							}
 							echo '</ul>';
 							echo '</div>';
-							$palette_count++;
 						}
 						echo '</section>';
 					}
 					break;
+
 				case 'font-sizes':
-					// Extract the font sizes
-					$default_font_sizes = isset($theme_settings['typography']['fontSizes']['default']) && $theme_settings['typography']['defaultFontSizes'] === true ? array('default' => $theme_settings['typography']['fontSizes']['default']) : [];
-					$custom_font_sizes = isset($theme_settings['typography']['fontSizes']['custom']) && $theme_settings['typography']['customFontSize'] ? array('custom' => $theme_settings['typography']['fontSizes']['custom']) : [];
-					$theme_font_sizes = isset($theme_settings['typography']['fontSizes']['theme']) ? array('theme' => $theme_settings['typography']['fontSizes']['theme'])  : [];
-					$font_sizes_array = array_merge($default_font_sizes, $theme_font_sizes, $custom_font_sizes);
+					$show_default = $theme_settings['typography']['defaultFontSizes'] ?? true;
+					$show_custom = $theme_settings['typography']['customFontSize'] ?? true;
+					$font_groups = style_guide_get_preset_groups(
+						$theme_settings['typography']['fontSizes'] ?? [],
+						$show_default,
+						$show_custom
+					);
 
-					// Display font sizes
-					if (!empty($font_sizes_array)) {
-						$array_keys = array_keys($font_sizes_array);
-						$font_size_count = 0;
+					if (!empty($font_groups)) {
 						echo '<section class="style-guide-section font-sizes">';
-						echo '<h2 id="fontSizes">Font Sizes</h2>';
-						foreach ($font_sizes_array as $font_sizes) {
+						echo '<h2 id="fontSizes">' . esc_html__('Font Sizes', 'style-guide') . '</h2>';
+						foreach ($font_groups as $group_name => $sizes) {
 							echo '<div class="font-sizes__group style-group">';
-							// output array key as the name of the font size
-							echo '<h3 class="sub-head" id="fontSizes-' . esc_html($array_keys[$font_size_count]) . '">' . esc_html(ucwords($array_keys[$font_size_count])) . '</h3>';
+							echo '<h3 class="sub-head" id="fontSizes-' . esc_attr($group_name) . '">' . esc_html(ucwords($group_name)) . '</h3>';
 							echo '<ul class="list list--vertical">';
-							foreach ($font_sizes as $font_size) {
-
+							foreach ($sizes as $font_size) {
 								$fluid = isset($font_size['fluid']) && $font_size['fluid'] ? 'true' : 'false';
 								$size = $fluid === 'true' && isset($font_size['fluid']['min'], $font_size['fluid']['max'])
 									? "min: {$font_size['fluid']['min']} max: {$font_size['fluid']['max']}"
 									: $font_size['size'];
+								$css_var = '--wp--preset--font-size--' . $font_size['slug'];
 								echo '<li>
-										<details>
-											<summary class="has-' . esc_attr($font_size['slug']) . '-font-size">' . esc_html($font_size['name']) . ' (' . esc_html($size) . ')</summary>
-											<div class="chip__meta">
-												<pre>Size: ' . esc_html($size) . '</pre>
-												<pre>Fluid: ' . esc_html($fluid) . '</pre>
-												<pre>--wp--preset--font-size--' . esc_html($font_size['slug']) . '</pre>
-											</div>
-										</details>
-								</li>';
-							}
-							echo '</ul>';
-							echo '</div>';
-							$font_size_count++;
-						}
-						echo '</section>';
-					}
-					break;
-
-
-				case 'spacing-scale':
-					// Extract the spacing (e.g., padding, margin scale)
-					$spacing_sizes = isset($theme_settings['spacing']['spacingSizes']['theme']) ? $theme_settings['spacing']['spacingSizes']['theme'] : [];
-
-					// Display spacing
-					if (!empty($spacing_sizes)) {
-						echo '<section class="style-guide-section spacing-scale">';
-						echo '<h2 id="spacingScale">Spacing Scale</h2>';
-						echo '<ul class="list list--vertical">';
-						foreach ($spacing_sizes as $spacing_size) {
-							echo '<li>
-									<div class="chip chip--spacing" style="width:var(--wp--preset--spacing--' . esc_attr($spacing_size['slug']) . ');"></div>
 									<details>
-										<summary>' . esc_html($spacing_size['name']) . '</summary>
+										<summary class="has-' . esc_attr($font_size['slug']) . '-font-size">' . esc_html($font_size['name']) . ' (' . esc_html($size) . ')</summary>
 										<div class="chip__meta">
-											<pre>Size: ' . esc_html($spacing_size['size']) . '</pre>
-											<pre>--wp--preset--spacing--' . esc_html($spacing_size['slug']) . '</pre>
+											<div class="chip__value">
+												<pre>' . esc_html__('Size:', 'style-guide') . ' ' . esc_html($size) . '</pre>
+											</div>
+											<div class="chip__value">
+												<pre>' . esc_html__('Fluid:', 'style-guide') . ' ' . esc_html($fluid) . '</pre>
+											</div>
+											<div class="chip__value">
+												<pre>' . esc_html($css_var) . '</pre>
+												' . style_guide_copy_button($css_var) . '
+											</div>
 										</div>
 									</details>
 								</li>';
+							}
+							echo '</ul>';
+							echo '</div>';
 						}
-						echo '</ul>';
 						echo '</section>';
 					}
 					break;
+
+				case 'spacing-scale':
+					$spacing_groups = style_guide_get_preset_groups(
+						$theme_settings['spacing']['spacingSizes'] ?? []
+					);
+
+					if (!empty($spacing_groups)) {
+						echo '<section class="style-guide-section spacing-scale">';
+						echo '<h2 id="spacingScale">' . esc_html__('Spacing Scale', 'style-guide') . '</h2>';
+						foreach ($spacing_groups as $group_name => $sizes) {
+							echo '<div class="spacing-scale__group style-group">';
+							echo '<h3 class="sub-head" id="spacingScale-' . esc_attr($group_name) . '">' . esc_html(ucwords($group_name)) . '</h3>';
+							echo '<ul class="list list--vertical">';
+							foreach ($sizes as $spacing_size) {
+								$css_var = '--wp--preset--spacing--' . $spacing_size['slug'];
+								echo '<li>
+									<div class="chip chip--spacing" style="width:var(' . esc_attr($css_var) . ');"></div>
+									<details>
+										<summary>' . esc_html($spacing_size['name']) . '</summary>
+										<div class="chip__meta">
+											<div class="chip__value">
+												<pre>' . esc_html__('Size:', 'style-guide') . ' ' . esc_html($spacing_size['size']) . '</pre>
+											</div>
+											<div class="chip__value">
+												<pre>' . esc_html($css_var) . '</pre>
+												' . style_guide_copy_button($css_var) . '
+											</div>
+										</div>
+									</details>
+								</li>';
+							}
+							echo '</ul>';
+							echo '</div>';
+						}
+						echo '</section>';
+					}
+					break;
+
 				case 'shadows':
+					$show_default = isset($theme_settings['shadow']['defaultPresets']) ? $theme_settings['shadow']['defaultPresets'] : true;
+					$shadow_groups = style_guide_get_preset_groups(
+						$theme_settings['shadow']['presets'] ?? [],
+						$show_default
+					);
 
-					// Extract the shadows
-					$default_shadows = $theme_settings['shadow']['defaultPresets'] ? array('default' => $theme_settings['shadow']['presets']['default']) : [];
-					$custom_shadows = isset($theme_settings['shadow']['presets']['custom']) ? array('custom' => $theme_settings['shadow']['presets']['custom']) : [];
-					$theme_shadows = isset($theme_settings['shadow']['presets']['theme']) ? array('theme' => $theme_settings['shadow']['presets']['theme']) : [];
-					$shadows_array = array_merge($default_shadows, $theme_shadows, $custom_shadows);
-
-					if (!empty($shadows_array)) {
-						$array_keys = array_keys($shadows_array);
-						$count = 0;
+					if (!empty($shadow_groups)) {
 						echo '<section class="style-guide-section shadows">';
-						echo '<h2 id="shadows">Shadows</h2>';
-						foreach ($shadows_array as $shadows) {
+						echo '<h2 id="shadows">' . esc_html__('Shadows', 'style-guide') . '</h2>';
+						foreach ($shadow_groups as $group_name => $shadows) {
 							echo '<div class="shadows__group style-group">';
-							// output array key as the name of the shadow
-							echo '<h3 class="sub-head" id="shadows-' . esc_html($array_keys[$count]) . '">' . esc_html(ucwords($array_keys[$count])) . '</h3>';
+							echo '<h3 class="sub-head" id="shadows-' . esc_attr($group_name) . '">' . esc_html(ucwords($group_name)) . '</h3>';
 							echo '<ul class="list">';
 							foreach ($shadows as $shadow) {
+								$css_var = '--wp--preset--shadow--' . $shadow['slug'];
+								$shadow_value = 'box-shadow: ' . $shadow['shadow'] . ';';
 								echo '<li>
-										<div class="chip chip--shadow" style="box-shadow:var(--wp--preset--shadow--' . esc_attr($shadow['slug']) . ');"></div>
-										<details>
-											<summary>' . esc_html($shadow['name']) . '</summary>
-											<div class="chip__meta">					
-												<pre>box-shadow:' . esc_html($shadow['shadow']) . ';</pre>
-												<pre>--wp--preset--shadow--' . esc_html($shadow['slug']) . '</pre>
+									<div class="chip chip--shadow" style="box-shadow:var(' . esc_attr($css_var) . ');"></div>
+									<details>
+										<summary>' . esc_html($shadow['name']) . '</summary>
+										<div class="chip__meta">
+											<div class="chip__value">
+												<pre>' . esc_html($shadow_value) . '</pre>
+												' . style_guide_copy_button($shadow_value) . '
 											</div>
-										</details>
-									</li>';
+											<div class="chip__value">
+												<pre>' . esc_html($css_var) . '</pre>
+												' . style_guide_copy_button($css_var) . '
+											</div>
+										</div>
+									</details>
+								</li>';
 							}
 							echo '</ul>';
 							echo '</div>';
-							$count++;
 						}
 						echo '</section>';
 					}
 					break;
-				case 'gradients';
 
+				case 'gradients':
+					$show_default = $theme_settings['color']['defaultGradients'] ?? true;
+					$show_custom = $theme_settings['color']['customGradient'] ?? true;
+					$gradient_groups = style_guide_get_preset_groups(
+						$theme_settings['color']['gradients'] ?? [],
+						$show_default,
+						$show_custom
+					);
 
-					// Extract the gradients
-					$defatult_gradients = isset($theme_settings['color']['gradients']['default']) && $theme_settings['color']['defaultGradients'] === true ? array('default' => $theme_settings['color']['gradients']['default']) : [];
-					$custom_gradients = isset($theme_settings['color']['gradients']['custom']) && $theme_settings['color']['customGradient'] === true ? array('custom' => $theme_settings['color']['gradients']['custom'])  : [];
-					$theme_gradients = isset($theme_settings['color']['gradients']['theme']) ? array('theme' => $theme_settings['color']['gradients']['theme']) : [];
-					$gradients_array = array_merge($defatult_gradients, $theme_gradients,  $custom_gradients);
-
-					if (!empty($gradients_array)) {
-						$array_keys = array_keys($gradients_array);
-						$count = 0;
+					if (!empty($gradient_groups)) {
 						echo '<section class="style-guide-section gradients">';
-						echo '<h2 id="gradients">Gradients</h2>';
-						foreach ($gradients_array as $gradients) {
+						echo '<h2 id="gradients">' . esc_html__('Gradients', 'style-guide') . '</h2>';
+						foreach ($gradient_groups as $group_name => $gradients) {
 							echo '<div class="gradients__group style-group">';
-							// output array key as the name of the gradient
-							echo '<h3 class="sub-head" id="gradients-' . esc_html($array_keys[$count]) . '">' . esc_html(ucwords($array_keys[$count])) . '</h3>';
+							echo '<h3 class="sub-head" id="gradients-' . esc_attr($group_name) . '">' . esc_html(ucwords($group_name)) . '</h3>';
 							echo '<ul class="list">';
 							foreach ($gradients as $gradient) {
+								$css_var = '--wp--preset--gradient--' . $gradient['slug'];
+								$gradient_value = 'background-image: ' . $gradient['gradient'] . ';';
 								echo '<li>
-												<div class="chip chip--gradient" style="background-image:var(--wp--preset--gradient--' . esc_attr($gradient['slug']) . ');"></div>
-												<details>
-													<summary>' . esc_html($gradient['name']) . '</summary>
-													<div class="chip__meta">					
-														<pre>background-image:' . esc_html($gradient['gradient']) . ';</pre>
-														<pre>--wp--preset--gradient--' . esc_html($gradient['slug']) . '</pre>
-													</div>
-												</details>
-											</li>';
+									<div class="chip chip--gradient" style="background-image:var(' . esc_attr($css_var) . ');"></div>
+									<details>
+										<summary>' . esc_html($gradient['name']) . '</summary>
+										<div class="chip__meta">
+											<div class="chip__value">
+												<pre>' . esc_html($gradient_value) . '</pre>
+												' . style_guide_copy_button($gradient_value) . '
+											</div>
+											<div class="chip__value">
+												<pre>' . esc_html($css_var) . '</pre>
+												' . style_guide_copy_button($css_var) . '
+											</div>
+										</div>
+									</details>
+								</li>';
 							}
 							echo '</ul>';
 							echo '</div>';
-							$count++;
 						}
 						echo '</section>';
 					}
-
 					break;
 			}
 		}
