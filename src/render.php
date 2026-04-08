@@ -20,11 +20,14 @@ $color_format = $attributes['colorFormat'] ?? 'hex';
 					if (!empty($palettes)) {
 						echo '<section class="style-guide-section color-palette">';
 						echo '<h2 id="colorPalette">' . esc_html__('Color Palette', 'style-guide') . '</h2>';
+						echo '<div class="style-guide-format-toggle-wrapper">';
+						echo '<span class="style-guide-format-label">' . esc_html__('Color Format', 'style-guide') . '</span>';
 						echo '<div class="style-guide-format-toggle" role="group" aria-label="' . esc_attr__('Color format', 'style-guide') . '">';
 						foreach (['hex' => 'HEX', 'rgb' => 'RGB', 'hsl' => 'HSL'] as $fmt => $label) {
 							$active = $color_format === $fmt ? ' aria-pressed="true"' : ' aria-pressed="false"';
 							echo '<button class="style-guide-format-btn" data-format="' . esc_attr($fmt) . '"' . $active . '>' . esc_html($label) . '</button>';
 						}
+						echo '</div>';
 						echo '</div>';
 						foreach ($palettes as $group_name => $colors) {
 							echo '<div class="color-palette__group style-group">';

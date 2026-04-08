@@ -56,13 +56,25 @@
 		border: 0;
 	}
 
+	.style-guide-format-toggle-wrapper {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+	}
+
+	.style-guide-format-label {
+		font-size: 0.85em;
+		font-weight: 600;
+		opacity: 0.7;
+	}
+
 	.style-guide-format-toggle {
 		display: inline-flex;
 		gap: 0;
 		border: 1px solid;
 		border-radius: 4px;
 		overflow: hidden;
-		margin-bottom: 1rem;
 	}
 
 	.style-guide-format-btn {
@@ -75,8 +87,8 @@
 		font-weight: 600;
 		letter-spacing: 0.05em;
 		color: inherit;
-		opacity: 0.6;
-		transition: opacity 0.2s ease, background-color 0.2s ease;
+		opacity: 0.5;
+		transition: opacity 0.2s ease;
 
 		&:last-child {
 			border-right: none;
@@ -88,9 +100,8 @@
 
 		&[aria-pressed="true"] {
 			opacity: 1;
-			background-color: currentColor;
-			/* Invert text against the currentColor background */
-			color: Canvas;
+			text-decoration: underline;
+			text-underline-offset: 3px;
 		}
 	}
 
@@ -101,13 +112,17 @@
 
 	.chip__value {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		gap: 0.5rem;
 
 		pre {
 			margin: 0;
 			flex: 1;
 			min-width: 0;
+			white-space: pre-wrap;
+			overflow-wrap: break-word;
+			word-break: break-all;
+			font-size: 0.85em;
 		}
 	}
 

@@ -7,7 +7,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
 	Panel,
 	PanelBody,
-	CheckboxControl,
+	FormTokenField,
 	SelectControl,
 } from '@wordpress/components';
 
@@ -24,51 +24,59 @@ const SECTION_OPTIONS = [
 	{ label: __( 'Gradients', 'style-guide' ), value: 'gradients' },
 ];
 
+const VALUE_TO_LABEL = Object.fromEntries(
+	SECTION_OPTIONS.map( ( o ) => [ o.value, o.label ] )
+);
+const LABEL_TO_VALUE = Object.fromEntries(
+	SECTION_OPTIONS.map( ( o ) => [ o.label.toLowerCase(), o.value ] )
+);
+
 export default function Edit( { attributes, setAttributes } ) {
 	const { selectedSections, colorFormat } = attributes;
 	const blockProps = useBlockProps();
 
-	const handleSectionToggle = ( value, checked ) => {
-		if ( checked ) {
-			setAttributes( {
-				selectedSections: [ ...selectedSections, value ],
-			} );
-		} else {
-			setAttributes( {
-				selectedSections: selectedSections.filter(
-					( s ) => s !== value
-				),
-			} );
-		}
-	};
+	const selectedLabels = selectedSections
+		.map( ( v ) => VALUE_TO_LABEL[ v ] )
+		.filter( Boolean );
+
+	const availableSuggestions = SECTION_OPTIONS.filter(
+		( o ) => ! selectedSections.includes( o.value )
+	).map( ( o ) => o.label );
 
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
 				<Panel>
-					<PanelBody title={ __( 'Sections', 'style-guide' ) }>
-						{ SECTION_OPTIONS.map( ( option ) => (
-							<CheckboxControl
-								key={ option.value }
-								__nextHasNoMarginBottom
-								label={ option.label }
-								checked={ selectedSections.includes(
-									option.value
-								) }
-								onChange={ ( checked ) =>
-									handleSectionToggle(
-										option.value,
-										checked
+					<PanelBody
+						title={ __( 'Settings', 'style-guide' ) }
+					>
+						<FormTokenField
+							label={ __(
+								'Select Sections',
+								'style-guide'
+							) }
+							value={ selectedLabels }
+							suggestions={ availableSuggestions }
+							onChange={ ( tokens ) => {
+								const values = tokens
+									.map(
+										( t ) =>
+											LABEL_TO_VALUE[
+												t.toLowerCase()
+											]
 									)
-								}
-							/>
-						) ) }
-					</PanelBody>
-					<PanelBody title={ __( 'Display', 'style-guide' ) }>
+									.filter( Boolean );
+								setAttributes( {
+									selectedSections: values,
+								} );
+							} }
+							__experimentalExpandOnFocus
+							__experimentalAutoSelectFirstMatch
+						/>
 						<SelectControl
 							__nextHasNoMarginBottom
 							label={ __(
-								'Color Value Format',
+								'Default Color Format',
 								'style-guide'
 							) }
 							value={ colorFormat }
